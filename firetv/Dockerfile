@@ -1,9 +1,22 @@
 ARG BUILD_FROM
 FROM $BUILD_FROM
 
-RUN apk add --no-cache bash swig libressl-dev python-dev libusb py-yaml py-flask py-pip build-base &&\
-  pip install https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.24.0.tar.gz &&\
-  pip install firetv[firetv-server]
+RUN apk add --no-cache \
+  bash \
+  gcc \
+  libusb \
+  musl-dev \
+  openssl-dev \
+  python \
+  python-dev \
+  py2-pip \
+  py-yaml \
+  jq
+
+RUN pip --no-cache-dir install --upgrade pip && \
+  pip --no-cache-dir install flask && \
+  pip --no-cache-dir install adb==1.2.0 && \
+  pip --no-cache-dir install --upgrade https://github.com/gollo/python-firetv/zipball/master
 
 COPY run.sh /
 COPY json2yaml.py /
